@@ -59,6 +59,9 @@ const ChatPage = () => {
           if (!researchPlan && data.plan) {
             console.log('设置研究计划并等待用户确认');
             setResearchPlan(data.plan);
+            
+            // 自动切换到研究计划视图，提升用户体验
+            setActiveView('plan');
           }
         }
         
