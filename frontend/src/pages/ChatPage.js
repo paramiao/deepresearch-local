@@ -3,6 +3,7 @@ import ChatInput from '../components/ChatInput';
 import MessageList from '../components/MessageList';
 import ResearchPlan from '../components/ResearchPlan';
 import ResearchProgress from '../components/ResearchProgress';
+import ResearchReport from '../components/ResearchReport';
 import { fetchChatResponse } from '../services/api';
 import { startResearch, getResearchStatus, confirmResearchPlan } from '../services/api';
 import { useChat } from '../utils/chatContext';
@@ -18,6 +19,9 @@ const ChatPage = () => {
   const [researchPlan, setResearchPlan] = useState(null);
   const [researchData, setResearchData] = useState(null);
   const [researchConfirmed, setResearchConfirmed] = useState(false);
+  
+  // 研究视图控制
+  const [activeView, setActiveView] = useState('chat'); // 'chat', 'plan', 'process', 'report'
   
   // 轮询间隔（毫秒）
   const pollingInterval = 2000;
@@ -40,6 +44,13 @@ const ChatPage = () => {
       try {
         const data = await getResearchStatus(researchProcessId);
         console.log('研究状态更新:', data.status, '进度:', data.progress, '当前步骤:', data.current_step);
+        
+        // 如果状态为完成且研究数据中已有报告，不再更新状态
+        if (data.status === 'completed' && researchData?.status === 'completed' && researchData?.report) {
+          console.log('研究已完成，不再更新状态');
+          return;
+        }
+        
         setResearchData(data);
         
         // 如果状态是等待确认，则保存研究计划
@@ -54,10 +65,20 @@ const ChatPage = () => {
         // 如果研究完成、出错或取消，则停止轮询
         if (['completed', 'error', 'cancelled'].includes(data.status)) {
           clearInterval(intervalId);
+          console.log('停止轮询 - 状态:', data.status);
           
-          // 如果研究完成，并且有报告，则发送报告到聊天
+          // 如果研究完成，并且有报告，则发送一条通知到聊天，但保留研究数据
           if (data.status === 'completed' && data.report) {
-            sendAssistantMessage(data.report);
+            sendAssistantMessage("研究报告已生成完成！您可以点击上方的'研究报告'标签查看详细内容，或继续在聊天中提问。");
+            // 自动切换到报告视图，但只在首次完成时切换
+            if (!researchData || researchData.status !== 'completed') {
+              setActiveView('report');
+            }
+            // 保留所有研究数据，不重置状态
+          }
+          
+          // 只在错误或取消状态下重置研究状态
+          if (['error', 'cancelled'].includes(data.status)) {
             setResearchMode(false);
             setResearchProcessId(null);
             setResearchPlan(null);
@@ -84,7 +105,7 @@ const ChatPage = () => {
         clearInterval(intervalId);
       }
     };
-  }, [researchProcessId, researchPlan, sendAssistantMessage]);
+  }, [researchProcessId, researchPlan, sendAssistantMessage, researchData]);
 
   // 处理确认研究计划
   const handleConfirmResearch = async () => {
@@ -229,35 +250,90 @@ const ChatPage = () => {
 
   return (
     <div className="chat-container">
-      <div className="chat-header">
+        <div className="chat-header">
         <h1>DeepResearch 研究助手</h1>
-        <p>由 Gemini AI 提供支持</p>
       </div>
       
-      <div className="chat-messages">
-        <MessageList messages={messages} />
-        
-        {/* 研究计划确认组件 */}
-        {researchMode && researchPlan && !researchConfirmed && (
-          <ResearchPlan 
-            plan={researchPlan} 
-            onConfirm={handleConfirmResearch} 
-            onCancel={handleCancelResearch}
-            loading={loading}
-          />
+      {/* 研究模式导航栏 */}
+      {researchMode && (
+        <div className="research-navigation">
+          <button 
+            className={`nav-button ${activeView === 'chat' ? 'active' : ''}`}
+            onClick={() => setActiveView('chat')}
+          >
+            聊天
+          </button>
+          <button 
+            className={`nav-button ${activeView === 'plan' ? 'active' : ''}`}
+            onClick={() => setActiveView('plan')}
+            disabled={!researchPlan}
+          >
+            研究计划
+          </button>
+          <button 
+            className={`nav-button ${activeView === 'process' ? 'active' : ''}`}
+            onClick={() => setActiveView('process')}
+            disabled={!researchData}
+          >
+            研究过程
+          </button>
+          <button 
+            className={`nav-button ${activeView === 'report' ? 'active' : ''}`}
+            onClick={() => setActiveView('report')}
+            disabled={!researchData?.report}
+          >
+            研究报告
+          </button>
+        </div>
+      )}
+
+      <div className="chat-content">
+        {/* 聊天视图 */}
+        {(!researchMode || activeView === 'chat') && (
+          <div className="chat-messages">
+            <MessageList messages={messages} />
+            <div ref={messagesEndRef} />
+          </div>
         )}
         
-        {/* 研究进度组件 - 展示详细研究步骤 */}
-        {researchMode && researchData && (
-          <ResearchProgress 
-            researchData={researchData} 
-            researchConfirmed={researchConfirmed}
-            onConfirm={researchConfirmed ? null : handleConfirmResearch}
-            onCancel={handleCancelResearch}
-          />
+        {/* 研究计划视图 */}
+        {researchMode && activeView === 'plan' && researchPlan && (
+          <div className="research-plan-view">
+            <ResearchPlan 
+              plan={researchPlan} 
+              onConfirm={!researchConfirmed ? handleConfirmResearch : null} 
+              onCancel={!researchConfirmed ? handleCancelResearch : null}
+              loading={loading}
+            />
+            {researchConfirmed && (
+              <div className="plan-confirmed-notice">
+                <p>研究计划已确认，正在执行研究...</p>
+              </div>
+            )}
+          </div>
         )}
         
-        <div ref={messagesEndRef} />
+        {/* 研究进度视图 */}
+        {researchMode && activeView === 'process' && researchData && (
+          <div className="research-process-view">
+            <ResearchProgress 
+              researchData={researchData} 
+              researchConfirmed={researchConfirmed}
+              onConfirm={researchConfirmed ? null : handleConfirmResearch}
+              onCancel={handleCancelResearch}
+            />
+          </div>
+        )}
+        
+        {/* 研究报告视图 */}
+        {researchMode && activeView === 'report' && researchData?.report && (
+          <div className="research-report-view">
+            <ResearchReport 
+              report={researchData.report} 
+              title={researchData?.topic ? `关于"${researchData.topic}"的研究报告` : "研究报告"}
+            />
+          </div>
+        )}
       </div>
       
       <div className="chat-input-container">
