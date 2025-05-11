@@ -1,0 +1,92 @@
+.research-plan {
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.research-plan-header {
+  margin-bottom: 16px;
+}
+
+.research-plan-header h3 {
+  font-size: 1.4rem;
+  color: #333;
+  margin: 0 0 6px 0;
+}
+
+.research-plan-subtitle {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.research-plan-content {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+}
+
+.research-plan-content h1,
+.research-plan-content h2 {
+  font-size: 1.3rem;
+}
+
+.research-plan-content h3,
+.research-plan-content h4 {
+  font-size: 1.1rem;
+}
+
+.research-plan-content ul,
+.research-plan-content ol {
+  padding-left: 20px;
+}
+
+.research-plan-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.confirm-button, 
+.cancel-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.confirm-button {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.confirm-button:hover {
+  background-color: #1557b0;
+}
+
+.cancel-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.cancel-button:hover {
+  background-color: #e0e0e0;
+}
+
+.confirm-button:disabled,
+.cancel-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

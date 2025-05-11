@@ -1,0 +1,486 @@
+.research-progress {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border: 1px solid #eaeaea;
+}
+
+.research-progress-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.status-icon {
+  font-size: 1.2rem;
+  color: #1a73e8;
+}
+
+.status-icon.researching {
+  color: #1a73e8;
+  animation: pulse 1.5s infinite;
+}
+
+.status-icon.analyzing {
+  color: #fbbc04;
+  animation: pulse 1.5s infinite;
+}
+
+.status-icon.reporting {
+  color: #34a853;
+  animation: pulse 1.5s infinite;
+}
+
+.status-icon.completed {
+  color: #34a853;
+}
+
+.status-icon.error {
+  color: #ea4335;
+}
+
+.status-text {
+  font-weight: 500;
+  color: #333;
+}
+
+.progress-bar-container {
+  flex: 3;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 150px;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #1a73e8;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.progress-percentage {
+  flex: 0 0 40px;
+  text-align: right;
+  font-weight: 500;
+  color: #333;
+}
+
+.research-progress-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.research-progress-content h4 {
+  font-size: 1rem;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.current-step {
+  padding: 12px;
+  background-color: #f0f7ff;
+  border-radius: 8px;
+  border-left: 3px solid #1a73e8;
+}
+
+.research-sites, 
+.research-findings, 
+.analysis-results {
+  padding: 12px;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.site-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.site-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f5f5f5;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.site-icon {
+  font-size: 1.2rem;
+}
+
+.research-findings ul,
+.analysis-results ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.research-findings li,
+.analysis-results li {
+  margin-bottom: 8px;
+}
+
+.research-error {
+  padding: 12px;
+  background-color: #fef0f0;
+  border-radius: 8px;
+  border-left: 3px solid #ea4335;
+}
+
+.error-message {
+  color: #ea4335;
+  margin: 0;
+}
+
+/* 研究计划确认按钮样式 */
+.research-plan-actions {
+  background-color: #f0f7ff;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  border: 1px solid #d0e1f9;
+}
+
+.confirmation-message {
+  margin: 0 0 16px 0;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.confirm-button {
+  padding: 10px 20px;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.confirm-button:hover {
+  background-color: #1765cc;
+}
+
+.confirm-button:disabled {
+  background-color: #a1c4f7;
+  cursor: not-allowed;
+}
+
+.cancel-button {
+  padding: 10px 20px;
+  background-color: white;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: #f5f5f5;
+}
+
+.cancel-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* 研究步骤样式 - 新的导航和容器样式 */
+.research-steps {
+  margin-top: 20px;
+}
+
+.research-steps h3 {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.steps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 步骤导航区域 */
+.steps-navigation {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.step-nav-item {
+  display: flex;
+  align-items: center;
+  min-width: 180px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.step-nav-item:hover {
+  background-color: #f0f0f0;
+}
+
+.step-nav-item.active {
+  background-color: #e8f0fe;
+  border-color: #1a73e8;
+}
+
+.step-nav-item.completed {
+  border-left: 3px solid #34a853;
+}
+
+.step-nav-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: #1a73e8;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.step-nav-item.completed .step-nav-number {
+  background-color: #34a853;
+}
+
+.step-nav-title {
+  flex: 1;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.step-nav-completed {
+  color: #34a853;
+  margin-left: 8px;
+}
+
+/* 当前步骤详情区域 */
+.step-details-container {
+  width: 100%;
+}
+
+.step-detail-wrapper {
+  width: 100%;
+  opacity: 1;
+  max-height: 2000px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.step-detail-wrapper.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+
+.research-steps h3 {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.research-step {
+  margin-bottom: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.active-step {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 1px rgba(26, 115, 232, 0.2);
+}
+
+.completed-step .step-header {
+  background-color: #f0f7ff;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  position: relative;
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: #1a73e8;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-right: 12px;
+}
+
+.completed-step .step-number {
+  background-color: #34a853;
+}
+
+.step-title {
+  flex: 1;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.step-completed-icon {
+  color: #34a853;
+  margin-right: 12px;
+}
+
+.step-toggle {
+  color: #666;
+}
+
+.step-content {
+  padding: 16px;
+  background-color: white;
+  border-top: 1px solid #eaeaea;
+}
+
+.step-description {
+  margin-bottom: 16px;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+/* 步骤搜索结果样式 */
+.step-search-results h5,
+.step-findings h5,
+.step-analysis h5 {
+  font-size: 0.95rem;
+  margin: 16px 0 12px;
+  color: #333;
+}
+
+.search-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.search-result-item {
+  padding: 12px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  border-left: 3px solid #1a73e8;
+}
+
+.result-title {
+  font-weight: 500;
+  color: #1a73e8;
+  margin-bottom: 4px;
+}
+
+.result-source {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.result-snippet {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.result-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.result-link:hover {
+  text-decoration: underline;
+}
+
+.step-findings ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.step-findings li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.step-analysis p {
+  margin: 0;
+  line-height: 1.5;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}

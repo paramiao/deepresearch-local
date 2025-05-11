@@ -1,0 +1,202 @@
+.research-step-detail {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.research-step-detail.active {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 1px rgba(26, 115, 232, 0.2);
+}
+
+.research-step-detail.completed {
+  border-left: 4px solid #34a853;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.step-number-container {
+  position: relative;
+  margin-right: 16px;
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: #1a73e8;
+  color: white;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.completed .step-number {
+  background-color: #34a853;
+}
+
+.step-completed-icon {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  color: #34a853;
+  background-color: white;
+  border-radius: 50%;
+  font-size: 14px;
+}
+
+.step-title-container {
+  flex: 1;
+}
+
+.step-title {
+  margin: 0 0 4px 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.step-description {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+.step-content {
+  padding: 16px;
+}
+
+.step-section {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  margin: 0 0 16px 0;
+  font-size: 1rem;
+  color: #333;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 8px;
+}
+
+.section-title svg {
+  margin-right: 8px;
+  color: #1a73e8;
+}
+
+.result-count {
+  margin-left: 8px;
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: normal;
+}
+
+/* 搜索结果样式 */
+.search-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.search-result-item {
+  padding: 12px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  border-left: 3px solid #1a73e8;
+}
+
+.result-title {
+  font-weight: 500;
+  color: #1a73e8;
+  margin-bottom: 4px;
+}
+
+.result-source {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.result-snippet {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.result-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.result-link:hover {
+  text-decoration: underline;
+}
+
+/* 研究发现样式 */
+.findings-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.finding-item {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+/* 分析结果样式 */
+.analysis-content {
+  background-color: #f0f7ff;
+  padding: 12px 16px;
+  border-radius: 6px;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* 进行中状态样式 */
+.step-in-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  margin-top: 16px;
+}
+
+.loading-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(26, 115, 232, 0.3);
+  border-radius: 50%;
+  border-top-color: #1a73e8;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.step-in-progress p {
+  margin: 0;
+  color: #666;
+}
