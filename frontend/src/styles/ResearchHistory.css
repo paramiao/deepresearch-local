@@ -1,0 +1,91 @@
+.research-history-section {
+  margin: 20px 0;
+  border-left: 4px solid #3498db;
+  padding-left: 15px;
+  background-color: #f8f9fa;
+  border-radius: 0 8px 8px 0;
+}
+
+.research-history-section h3 {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.history-content {
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.plan-history {
+  border: 1px solid #e1e8ed;
+  background-color: #f5f8fa;
+}
+
+.report-history {
+  border: 1px solid #e1e8ed;
+  background-color: #f5f8fa;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.history-content p {
+  margin-bottom: 0.8em;
+  line-height: 1.5;
+}
+
+.history-content h1, 
+.history-content h2, 
+.history-content h3 {
+  margin-top: 1.5em;
+  margin-bottom: 0.8em;
+}
+
+.history-content ul, 
+.history-content ol {
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+/* 表格样式 */
+.history-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+.history-content th, 
+.history-content td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.history-content th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+/* 引用样式 */
+.history-content blockquote {
+  border-left: 3px solid #3498db;
+  margin: 1em 0;
+  padding-left: 1em;
+  color: #555;
+  font-style: italic;
+}
+
+/* 代码样式 */
+.history-content code {
+  background-color: #f1f1f1;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+.history-content pre {
+  background-color: #f1f1f1;
+  padding: 1em;
+  border-radius: 5px;
+  overflow-x: auto;
+}

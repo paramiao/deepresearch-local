@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://10.108.43.112:8000/api';
 console.log('研究服务使用API基础URL:', API_BASE_URL); // 添加调试日志
 
 const apiClient = axios.create({

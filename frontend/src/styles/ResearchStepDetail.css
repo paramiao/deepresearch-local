@@ -61,14 +61,14 @@
 }
 
 .step-title {
-  margin: 0 0 4px 0;
-  font-size: 1.1rem;
+  margin: 0 0 8px 0;
+  font-size: 18px;
   color: #333;
 }
 
 .step-description {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 14px;
   color: #666;
   line-height: 1.4;
 }

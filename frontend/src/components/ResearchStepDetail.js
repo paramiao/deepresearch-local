@@ -1,12 +1,18 @@
-import React from 'react';
-import { FaSearch, FaLink, FaFileAlt, FaChartBar, FaCheckCircle } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { FaSearch, FaLink, FaFileAlt, FaChartBar, FaCheckCircle, FaInfoCircle, FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import ReactMarkdown from 'react-markdown';
 import '../styles/ResearchStepDetail.css';
+import '../styles/OriginalPlanContent.css';
 
 /**
  * 研究步骤详情组件 - 显示单个研究步骤的详细信息，包括搜索结果、发现和分析
  */
 const ResearchStepDetail = ({ step, index, isActive, isCompleted }) => {
+  const [showOriginalContent, setShowOriginalContent] = useState(false);
+  
   if (!step) return null;
+
+  const hasOriginalContent = step.original_content && step.original_content !== step.description;
 
   return (
     <div className={`research-step-detail ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`}>
@@ -18,8 +24,38 @@ const ResearchStepDetail = ({ step, index, isActive, isCompleted }) => {
         <div className="step-title-container">
           <h3 className="step-title">{step.title}</h3>
           <p className="step-description">{step.description}</p>
+          
+          {/* 查看原始研究计划内容的切换按钮 */}
+          {hasOriginalContent && (
+            <button 
+              className="original-content-toggle" 
+              onClick={() => setShowOriginalContent(!showOriginalContent)}
+            >
+              {showOriginalContent ? (
+                <>
+                  <FaAngleUp /> 隐藏研究计划详情
+                </>
+              ) : (
+                <>
+                  <FaAngleDown /> 查看研究计划详情
+                </>
+              )}
+            </button>
+          )}
         </div>
       </div>
+      
+      {/* 展示研究计划原始内容 */}
+      {showOriginalContent && hasOriginalContent && (
+        <div className="original-plan-content">
+          <div className="original-content-header">
+            <FaInfoCircle /> <span>研究计划中的原始内容：</span>
+          </div>
+          <div className="original-content-body">
+            <ReactMarkdown>{step.original_content}</ReactMarkdown>
+          </div>
+        </div>
+      )}
       
       <div className="step-content">
         {/* 搜索结果区域 */}

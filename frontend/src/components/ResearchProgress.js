@@ -1,12 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaSearch, FaChartBar, FaFileAlt, FaSatelliteDish, FaExclamationTriangle, FaCheckCircle } from 'react-icons/fa';
 import ResearchStepDetail from './ResearchStepDetail';
 import '../styles/ResearchProgress.css';
+import '../styles/ResearchHistory.css';
+import ReactMarkdown from 'react-markdown';
 
 const ResearchProgress = ({ researchData, researchConfirmed, onConfirm, onCancel }) => {
-  // 使用状态管理展开的步骤 - Hook必须在组件顶层调用
+  // 使用状态管理展开的步骤和历史内容 - Hook必须在组件顶层调用
   const [expandedSteps, setExpandedSteps] = useState({});
   const [loading, setLoading] = useState(false);
+  const [historyData, setHistoryData] = useState({});
+  
+  // 使用useEffect跟踪研究数据变化，保留历史内容
+  useEffect(() => {
+    if (!researchData) return;
+
+    // 保存研究计划阶段的数据
+    if (researchData.plan) {
+      setHistoryData(prev => ({
+        ...prev,
+        plan: prev.plan || researchData.plan
+      }));
+    }
+
+    // 保存研究步骤数据，合并而不是替换
+    if (researchData.research_steps && researchData.research_steps.length > 0) {
+      setHistoryData(prev => ({
+        ...prev,
+        research_steps: researchData.research_steps
+      }));
+    }
+
+    // 保存最终报告数据
+    if (researchData.report) {
+      setHistoryData(prev => ({
+        ...prev,
+        report: prev.report || researchData.report
+      }));
+    }
+    
+  }, [researchData]);
   
   if (!researchData) {
     return null;
@@ -136,6 +169,16 @@ const ResearchProgress = ({ researchData, researchConfirmed, onConfirm, onCancel
       )}
 
       <div className="research-progress-content">
+        {/* 显示研究计划历史内容 */}
+        {historyData.plan && status !== 'waiting_confirmation' && (
+          <div className="research-history-section">
+            <h3>研究计划</h3>
+            <div className="history-content plan-history">
+              <ReactMarkdown>{historyData.plan}</ReactMarkdown>
+            </div>
+          </div>
+        )}
+        
         {current_step && (
           <div className="current-step">
             <h4>当前步骤</h4>
@@ -143,7 +186,7 @@ const ResearchProgress = ({ researchData, researchConfirmed, onConfirm, onCancel
           </div>
         )}
 
-        {/* 研究步骤列表 - 使用升级的组件显示 */}
+        {/* 研究步骤列表 - 使用升级的组件显示，即使在研究完成后也保持显示 */}
         {research_steps && research_steps.length > 0 && (
           <div className="research-steps">
             <h3>研究步骤</h3>
@@ -197,7 +240,8 @@ const ResearchProgress = ({ researchData, researchConfirmed, onConfirm, onCancel
           </div>
         )}
 
-        {research_findings && research_findings.length > 0 && !research_steps && (
+        {/* 确保研究发现在有研究步骤的情况下仍然显示 */}
+        {research_findings && research_findings.length > 0 && (
           <div className="research-findings">
             <h4>主要研究发现</h4>
             <ul>
@@ -208,7 +252,8 @@ const ResearchProgress = ({ researchData, researchConfirmed, onConfirm, onCancel
           </div>
         )}
 
-        {analysis_results && analysis_results.length > 0 && !research_steps && (
+        {/* 确保分析结果在有研究步骤的情况下仍然显示 */}
+        {analysis_results && analysis_results.length > 0 && (
           <div className="analysis-results">
             <h4>分析结果</h4>
             <ul>
@@ -216,6 +261,16 @@ const ResearchProgress = ({ researchData, researchConfirmed, onConfirm, onCancel
                 <li key={index}>{result}</li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {/* 显示最终研究报告历史内容 */}
+        {historyData.report && status === 'completed' && (
+          <div className="research-history-section report-section">
+            <h3>研究报告</h3>
+            <div className="history-content report-history">
+              <ReactMarkdown>{historyData.report}</ReactMarkdown>
+            </div>
           </div>
         )}
 

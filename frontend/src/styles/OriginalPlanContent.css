@@ -1,0 +1,57 @@
+/* 原始计划内容区域样式 */
+.original-plan-content {
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+  font-size: 14px;
+}
+
+.original-content-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: #1a73e8;
+}
+
+.original-content-body {
+  padding: 12px;
+  border-left: 3px solid #1a73e8;
+  background-color: white;
+  border-radius: 0 4px 4px 0;
+}
+
+.original-content-body p {
+  margin-bottom: 0.8em;
+  line-height: 1.5;
+}
+
+.original-content-body ul,
+.original-content-body ol {
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+/* 原始内容切换按钮 */
+.original-content-toggle {
+  background: transparent;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.original-content-toggle:hover {
+  background-color: #f5f5f5;
+  color: #1a73e8;
+  border-color: #1a73e8;
+}

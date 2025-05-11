@@ -3,7 +3,7 @@ import time
 import json
 import logging
 import requests
-from typing import List, Optional
+from typing import List, Optional, Dict, Any, Union
 
 # 设置日志
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -280,42 +280,157 @@ class SiliconFlowService:
         except Exception:
             return ""
     
-    def generate_research_report(self, research_plan, findings):
-        """根据研究计划和发现生成研究报告"""
-        prompt = f"""
-        根据以下研究计划和发现，生成一份全面而专业的研究报告。
+    def create_knowledge_content(self, step_title, step_description, topic, research_plan):
+        """为知识性步骤（如研究目标、研究方法等）直接生成内容，而不进行搜索
         
-        研究计划:
-        {research_plan}
-        
-        研究发现:
-        {findings}
-        
-        请按照以下格式组织报告:
-        1. 执行摘要 - 简要概述研究目标和主要发现
-        2. 研究方法 - 说明数据收集和分析方法
-        3. 详细发现 - 对所有数据进行深入分析
-        4. 关键洞察 - 提取主要洞察点
-        5. 结论和建议 - 基于数据和分析提供有价值的建议
-        
-        报告应该条理清晰，内容丰富，语言专业。请以markdown格式输出。
+        知识性步骤不需要搜索外部内容，而是通过AI直接生成框架和方法论指导
         """
-        
-        payload = {
-            "model": "Pro/deepseek-ai/DeepSeek-V3",
-            "messages": [
-                {"role": "system", "content": "你是一个专业的研究分析师，擅长撰写全面、深入、有洞察力的研究报告。"},
-                {"role": "user", "content": prompt}
-            ],
-            "temperature": 0.5
-        }
-        
         try:
-            response = self._make_api_request("chat/completions", payload)
-            return response["choices"][0]["message"]["content"]
+            logger.info(f"为知识性步骤 '{step_title}' 生成内容")
+            
+            # 构造提示语，根据步骤类型生成适当内容
+            prompt = f"""
+            你是一位资深的研究专家，请根据以下信息，为研究步骤提供专业的内容:
+            
+            研究主题: {topic}
+            步骤标题: {step_title}
+            步骤描述: {step_description}
+            
+            完整研究计划概述:
+            {research_plan[:1000]}  # 限制长度，避免提示过长
+            
+            请针对此步骤提供专业、全面且结构化的内容。不要进行实际搜索，而是根据你的专业知识，提供关于{step_title}的恰当框架和方法论指导。
+            内容应当学术严谨、逻辑清晰，并与整体研究计划保持一致。
+            
+            如果是研究目标，请提供明确的目标陈述和预期成果。
+            如果是研究方法，请概述适合该主题的研究方法和数据收集策略。
+            如果是研究背景，请提供对该领域的概述和研究意义。
+            
+            返回格式应为结构化的Markdown格式，包含适当的小标题和要点列表。
+            """
+
+            # 调用API生成内容
+            response = self._make_api_request(
+                model="Pro/deepseek-ai/DeepSeek-V3",
+                messages=[
+                    {"role": "system", "content": "你是一位专业的研究顾问，善于提供研究方法指导和框架建议。"},
+                    {"role": "user", "content": prompt}
+                ]
+            )
+            
+            if response and "choices" in response and len(response["choices"]) > 0:
+                return response["choices"][0]["message"]["content"]
+            else:
+                logger.warning(f"生成知识性内容失败，返回默认内容")
+                return f"## {step_title}\n\n此部分内容将在研究执行过程中完善。"
+                
         except Exception as e:
-            logger.error(f"生成研究报告失败: {str(e)}")
-            raise
+            logger.error(f"生成知识性内容时出错: {str(e)}")
+            return f"## {step_title}\n\n生成内容时出现错误，此部分内容将在研究执行过程中补充。"
+    
+    def analyze_research_report(self, research_findings, topic, requirements):
+        """分析研究发现并生成最终报告
+        
+        Args:
+            research_findings: 所有的研究发现列表
+            topic: 研究主题
+            requirements: 用户特定需求
+            
+        Returns:
+            str: 生成的研究报告
+        """
+        try:
+            if not research_findings:
+                return "未找到足够的研究发现来生成报告。"
+                
+            # 格式化研究发现用于提示中
+            findings_text = "\n".join([f"- {finding}" for finding in research_findings])
+            
+            # 构造适合报告生成的增强提示，确保详尽的研究报告
+            prompt = f"""请基于以下实际研究过程中收集的研究发现，为主题"{topic}"撰写一份非常详尽全面的研究报告。
+
+研究发现(请完整引用这些发现作为报告支撑):
+{findings_text}
+
+{requirements if requirements else ''}
+
+特别重要的要求:
+1. **保留完整研究过程中的详细内容** - 对每个研究问题必须有深入的分析，而不是简单的一句话结论
+2. **每个研究问题点必须拥有至少150-300字的详细分析**，包含多个观点、数据论证和实例
+3. 必须展示业内专家级别的分析深度和广度，避免表面或浅显的分析
+
+报告结构要求:
+1. 必须包含清晰的多层结构，包括摘要、研究背景、方法论、主要发现、个问题分析、市场分析、挑战与机遇、详细建议和结论
+2. 必须使用数据驱动的方法，包含实际数据、百分比、增长率等具体数字来支持分析
+3. 必须使用表格、列表等结构化方式增强内容的条理性
+4. 必须直接引用所提供的研究发现作为支持证据
+
+必须按以下详细结构组织报告，表达必须深入、综合、具体，而非模糊或简化:
+
+# {topic} 全面研究报告
+
+## 摘要
+[包含研究背景、目的和主要发现的全面概述 - 至少150字]
+
+## 研究背景与方法
+[说明研究背景、重要性和使用的研究方法 - 至少150字]
+
+## 核心研究发现
+[对每个研究问题进行详细分析，每个问题至少200字的深入分析]
+
+### 研究问题一: [问题标题]
+[详细分析包含数据支持、多个观点和具体实例 - 至少250字]
+
+### 研究问题二: [问题标题]
+[详细分析包含数据支持、多个观点和具体实例 - 至少250字]
+
+### 研究问题三: [问题标题]
+[详细分析包含数据支持、多个观点和具体实例 - 至少250字]
+
+## 市场分析与趋势
+[全面分析市场状况、行业趋势、增长预测等 - 至少300字]
+
+## 挑战与机遇
+[分析当前面临的主要挑战与潜在机遇 - 至少250字]
+
+## 具体建议
+[基于研究发现提供具体可行的建议 - 每个建议至少包含100字的详细说明]
+
+## 结论
+[总结性观点和建议 - 至少150字]
+
+## 附录: 研究数据和来源
+[列出关键数据和信息来源]
+"""
+
+            # 调用API生成报告
+            logger.info(f"开始生成研究报告，主题: {topic}")
+            
+            # 准备请求载荷，正确使用chat/completions端点
+            payload = {
+                "model": "Pro/deepseek-ai/DeepSeek-V3",
+                "messages": [
+                    {"role": "system", "content": "你是一位资深的市场研究专家，擅长生成详尽、有洞察力、数据驱动的行业报告。你的研究报告以全面深入的分析和数据展示而闻名。"},
+                    {"role": "user", "content": prompt}
+                ],
+                "temperature": 0.3
+            }
+            
+            # 调用API生成报告
+            response = self._make_api_request("chat/completions", payload)
+            
+            # 处理响应
+            if response and "choices" in response and len(response["choices"]) > 0:
+                report = response["choices"][0]["message"]["content"]
+                logger.info("研究报告生成成功")
+                return report
+            else:
+                logger.error("生成研究报告失败，响应数据不完整")
+                return "生成报告时出错。请检查系统日志。"
+                
+        except Exception as e:
+            logger.error(f"生成研究报告时出错: {str(e)}")
+            return f"生成研究报告时出错: {str(e)}"
     
     def answer_question(self, conversation_history, question):
         """回答用户问题，基于对话历史"""

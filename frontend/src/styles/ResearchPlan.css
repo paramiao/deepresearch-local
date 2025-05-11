@@ -17,76 +17,145 @@
 }
 
 .research-plan-subtitle {
-  color: #666;
-  font-size: 0.9rem;
-  margin: 0;
+  color: #6c757d;
+  font-size: 0.9em;
+  margin-top: 5px;
 }
 
 .research-plan-content {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 16px;
+  color: #212529;
+  line-height: 1.6;
+}
+
+.plan-summary {
   margin-bottom: 20px;
-  max-height: 400px;
-  overflow-y: auto;
-  border: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #e9ecef;
 }
 
-.research-plan-content h1,
+.plan-summary h2 {
+  font-size: 1.2em;
+  color: #495057;
+}
+
+.core-questions-section {
+  background-color: #f0f7ff;
+  border-radius: 6px;
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-left: 4px solid #4285f4;
+}
+
+.core-questions-section h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #0056b3;
+  font-size: 1.15em;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.research-questions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.research-question-item {
+  display: flex;
+  margin-bottom: 12px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.research-question-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+.question-number {
+  background-color: #4285f4;
+  color: white;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.question-content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.question-search-icon {
+  color: #4285f4;
+  margin-left: 10px;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.question-search-icon:hover {
+  opacity: 1;
+}
+
 .research-plan-content h2 {
-  font-size: 1.3rem;
+  color: #495057;
+  margin-top: 20px;
+  font-size: 1.3em;
 }
 
-.research-plan-content h3,
-.research-plan-content h4 {
-  font-size: 1.1rem;
-}
-
-.research-plan-content ul,
-.research-plan-content ol {
+.research-plan-content ul {
   padding-left: 20px;
 }
 
 .research-plan-actions {
   display: flex;
-  gap: 12px;
-  margin-top: 16px;
+  justify-content: space-between;
+  margin-top: 30px;
 }
 
-.confirm-button, 
-.cancel-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.confirm-button, .cancel-button {
+  padding: 10px 20px;
   border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .confirm-button {
-  background-color: #1a73e8;
+  background-color: #28a745;
   color: white;
 }
 
 .confirm-button:hover {
-  background-color: #1557b0;
+  background-color: #218838;
 }
 
 .cancel-button {
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: #dc3545;
+  color: white;
 }
 
 .cancel-button:hover {
-  background-color: #e0e0e0;
+  background-color: #c82333;
 }
 
-.confirm-button:disabled,
-.cancel-button:disabled {
+.confirm-button:disabled, .cancel-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
