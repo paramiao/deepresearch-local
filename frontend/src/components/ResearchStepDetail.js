@@ -7,8 +7,21 @@ import '../styles/OriginalPlanContent.css';
 /**
  * 研究步骤详情组件 - 显示单个研究步骤的详细信息，包括搜索结果、发现和分析
  */
+
+// 处理文本中的乱码问题
+const cleanTextContent = (text) => {
+  if (!text) return '';
+  
+  // 检测到乱码特征的正则表达式
+  const garbledPattern = /\�|\uFFFD|[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g;
+  
+  // 替换或删除乱码字符
+  return text.replace(garbledPattern, '');
+};
+
 const ResearchStepDetail = ({ step, index, isActive, isCompleted }) => {
-  const [showOriginalContent, setShowOriginalContent] = useState(false);
+  // 默认展示研究计划原始内容，提高可访问性
+  const [showOriginalContent, setShowOriginalContent] = useState(true);
   
   if (!step) return null;
 
@@ -52,7 +65,7 @@ const ResearchStepDetail = ({ step, index, isActive, isCompleted }) => {
             <FaInfoCircle /> <span>研究计划中的原始内容：</span>
           </div>
           <div className="original-content-body">
-            <ReactMarkdown>{step.original_content}</ReactMarkdown>
+            <ReactMarkdown>{cleanTextContent(step.original_content)}</ReactMarkdown>
           </div>
         </div>
       )}
@@ -69,10 +82,10 @@ const ResearchStepDetail = ({ step, index, isActive, isCompleted }) => {
             <div className="search-results-list">
               {step.search_results.map((result, idx) => (
                 <div key={idx} className="search-result-item">
-                  <div className="result-title">{result.title}</div>
-                  <div className="result-source">{result.name}</div>
+                  <div className="result-title">{cleanTextContent(result.title)}</div>
+                  <div className="result-source">{cleanTextContent(result.name)}</div>
                   {result.snippet && (
-                    <div className="result-snippet">{result.snippet}</div>
+                    <div className="result-snippet">{cleanTextContent(result.snippet)}</div>
                   )}
                   <a 
                     href={result.url} 
@@ -98,7 +111,7 @@ const ResearchStepDetail = ({ step, index, isActive, isCompleted }) => {
             </h4>
             <ul className="findings-list">
               {step.findings.map((finding, idx) => (
-                <li key={idx} className="finding-item">{finding}</li>
+                <li key={idx} className="finding-item">{cleanTextContent(finding)}</li>
               ))}
             </ul>
           </div>
@@ -112,7 +125,7 @@ const ResearchStepDetail = ({ step, index, isActive, isCompleted }) => {
               <span>分析结论</span>
             </h4>
             <div className="analysis-content">
-              {step.analysis}
+              {cleanTextContent(step.analysis)}
             </div>
           </div>
         )}

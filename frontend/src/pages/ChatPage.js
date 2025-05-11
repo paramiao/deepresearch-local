@@ -23,8 +23,8 @@ const ChatPage = () => {
   // 研究视图控制
   const [activeView, setActiveView] = useState('chat'); // 'chat', 'plan', 'process', 'report'
   
-  // 轮询间隔（毫秒）
-  const pollingInterval = 2000;
+  // 轮询间隔（毫秒） - 增加间隔减少请求频率
+  const pollingInterval = 6000; // 介于2秒和10秒之间的合理值
   
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
