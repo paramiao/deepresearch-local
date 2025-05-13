@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '/api';
 console.log('使用API基础URL:', API_BASE_URL); // 添加日志帮助调试
 
 const apiClient = axios.create({

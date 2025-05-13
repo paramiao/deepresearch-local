@@ -4,8 +4,7 @@ import MessageList from '../components/MessageList';
 import ResearchPlan from '../components/ResearchPlan';
 import ResearchProgress from '../components/ResearchProgress';
 import ResearchReport from '../components/ResearchReport';
-import { fetchChatResponse } from '../services/api';
-import { startResearch, getResearchStatus, confirmResearchPlan } from '../services/api';
+import { fetchChatResponse, startResearch, getResearchStatus, confirmResearchPlan, cancelResearch } from '../services/api';
 import { useChat } from '../utils/chatContext';
 import '../styles/ChatPage.css';
 
